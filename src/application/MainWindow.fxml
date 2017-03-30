@@ -5,10 +5,13 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="684.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" 
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" 
+	prefWidth="684.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.111" 
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController"
+	AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
    <children>
-      <MenuBar accessibleText="Menu Bar" layoutY="2.0" prefHeight="25.0" prefWidth="684.0">
+      <MenuBar fx:id="menuBar" accessibleText="Menu Bar" layoutY="2.0" prefHeight="25.0" prefWidth="684.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
