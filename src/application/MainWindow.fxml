@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" 
 	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" 
-	prefWidth="684.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.111" 
+	prefWidth="684.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8.0.91" 
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController"
 	AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
    <children>
