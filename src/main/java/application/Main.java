@@ -11,9 +11,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-            AnchorPane page = (AnchorPane) FXMLLoader.load(Main.class.getResource("MainWindow.fxml"));
+            AnchorPane page = (AnchorPane) FXMLLoader.load(Main.class.getResource("../MainWindow.fxml"));
 			Scene scene = new Scene(page);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("../application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
