@@ -14,11 +14,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 public class MainWindowController {
 	
 	@FXML AnchorPane anchorPane;
 	@FXML ImageView pdfContainer;
+	@FXML HBox pdfContainerHBox;
 
 	@FXML
 	private void clickOpen() throws IOException {
@@ -43,6 +45,17 @@ public class MainWindowController {
 			e.printStackTrace();
 		}
 		pdfContainer.setImage(image);
+		
+		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {			
+    		pdfContainer.setX(pdfContainer.getX() + newVal.doubleValue() - oldVal.doubleValue());	
+    		pdfContainer.setFitWidth(pdfContainer.getFitWidth() + newVal.doubleValue() - oldVal.doubleValue());
+			pdfContainer.preserveRatioProperty();
+		});
+		
+		anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+			pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
+			pdfContainer.preserveRatioProperty();
+		});
 	}
 
 	private File openFileChoser() {

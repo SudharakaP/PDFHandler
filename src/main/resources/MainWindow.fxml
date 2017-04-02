@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="684.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
+<AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
    <children>
       <MenuBar accessibleText="Menu Bar" layoutY="2.0" prefHeight="25.0" prefWidth="684.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
@@ -36,18 +36,15 @@
             </items>
           </Menu>
         </menus>
-      </MenuBar>
-      
-      <ScrollPane hbarPolicy="ALWAYS" layoutX="-1.0" layoutY="27.0" prefHeight="486.0" prefWidth="684.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="475.0" prefWidth="670.0">
-               <HBox alignment="CENTER" layoutX="-1.0" layoutY="-1.0" prefHeight="475.0" prefWidth="670.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <children>
-                	<ImageView fx:id="pdfContainer" fitHeight="475.0" fitWidth="670.0" pickOnBounds="true" preserveRatio="true" />
-                  </children>
-               </HBox>
-          </AnchorPane>
-        </content>
+      </MenuBar>         
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutY="27.0" prefHeight="487.0" prefWidth="660.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+         <content>
+            <HBox fx:id="pdfContainerHBox" alignment="CENTER">
+               <children>
+                  <ImageView fx:id="pdfContainer" fitHeight="475.0" fitWidth="647.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </HBox>
+         </content>
       </ScrollPane>
    </children>
 </AnchorPane>
