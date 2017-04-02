@@ -3,18 +3,22 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
-import org.jpedal.examples.viewer.Commands;
-import org.jpedal.examples.viewer.OpenViewerFX;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class MainWindowController {
 	
 	@FXML AnchorPane anchorPane;
+	@FXML ImageView pdfContainer;
 
 	@FXML
 	private void clickOpen() throws IOException {
@@ -23,11 +27,22 @@ public class MainWindowController {
 	}
 
 	private void openPDFFile(File selectedFile) {
-		Stage pdfStage = new Stage();
-		OpenViewerFX pdfViewer = new OpenViewerFX(pdfStage, null);
-		pdfViewer.setupViewer();
-		Object[] input =  {selectedFile};
-		pdfViewer.executeCommand(Commands.OPENFILE, input);
+		PDDocument pdfFile = null;
+		try {
+			pdfFile = PDDocument.load(selectedFile);
+		} catch (InvalidPasswordException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		PDFRenderer renderer = new PDFRenderer(pdfFile);
+		Image image = null;
+		try {
+			image = SwingFXUtils.toFXImage(renderer.renderImage(0), null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		pdfContainer.setImage(image);
 	}
 
 	private File openFileChoser() {
