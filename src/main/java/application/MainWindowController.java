@@ -30,6 +30,10 @@ public class MainWindowController {
 
 	private void openPDFFile(File selectedFile) {
 		PDDocument pdfFile = null;
+		
+		if (selectedFile == null){
+			return;
+		}
 		try {
 			pdfFile = PDDocument.load(selectedFile);
 		} catch (InvalidPasswordException e) {
