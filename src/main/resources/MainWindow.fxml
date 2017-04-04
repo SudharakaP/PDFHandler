@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
    <children>
@@ -36,12 +41,44 @@
             </items>
           </Menu>
         </menus>
-      </MenuBar>         
-      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutY="27.0" prefHeight="487.0" prefWidth="660.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
-         <content>
-            <HBox fx:id="pdfContainerHBox" alignment="CENTER">
+      </MenuBar>
+      <ToolBar layoutY="27.0" prefHeight="25.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <items>
+            <HBox alignment="CENTER" prefHeight="19.0" prefWidth="647.0">
                <children>
-                  <ImageView fx:id="pdfContainer" fitHeight="475.0" fitWidth="647.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button mnemonicParsing="false" text="Prev">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <TextField alignment="CENTER" prefHeight="18.0" prefWidth="45.0">
+                     <font>
+                        <Font size="7.0" />
+                     </font>
+                  </TextField>
+                  <Button mnemonicParsing="false" text="Next">
+                     <font>
+                        <Font size="9.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </items>
+      </ToolBar>        
+      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutY="55.0" prefHeight="459.0" prefWidth="660.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="55.0">
+         <content>
+            <HBox fx:id="pdfContainerHBox" alignment="CENTER" prefHeight="402.0" prefWidth="645.0">
+               <children>
+                  <ImageView fx:id="pdfContainer" fitHeight="446.0" fitWidth="645.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
          </content>
