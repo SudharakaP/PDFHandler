@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainWindowController">
+<AnchorPane fx:id="anchorPane" accessibleText="PDF Window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainWindow.MainWindowController">
    <children>
       <MenuBar accessibleText="Menu Bar" layoutY="2.0" prefHeight="25.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
@@ -44,9 +44,9 @@
          <children>
             <Group>
                <children>
-                  <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Prev" />
-                  <Button contentDisplay="CENTER" layoutX="140.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Next" />
-                  <TextField layoutX="66.0" prefHeight="25.0" prefWidth="66.0" />
+                  <Button fx:id="prevButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Prev" />
+                  <Button fx:id="nextButton" contentDisplay="CENTER" layoutX="140.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Next" />
+                  <TextField fx:id="pageNumber" layoutX="66.0" prefHeight="25.0" prefWidth="66.0" />
                </children>
             </Group>
          </children>

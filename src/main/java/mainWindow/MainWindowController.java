@@ -1,4 +1,4 @@
-package application;
+package mainWindow;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class MainWindowController {
 	
 	@FXML AnchorPane anchorPane;
 	@FXML ImageView pdfContainer;
-	@FXML HBox toolBarHBox;
 	@FXML Button prevButton;
 	@FXML Button nextButton;
 	@FXML TextField pageNumber;
