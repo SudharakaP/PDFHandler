@@ -16,7 +16,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -39,7 +38,6 @@ public class MainWindowController {
 
 	private void openPDFFile(File selectedFile) {
 		
-		
 		if (selectedFile == null){
 			return;
 		}
@@ -60,21 +58,29 @@ public class MainWindowController {
 	private void navButtonListeners() {
 		prevButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		        pageNo--;
-		        openPDFPage(pageNo);
+		    	if (pageNo != 0){
+		    		pageNo--;
+		    		openPDFPage(pageNo);
+		    	}
 		    }
 		});
 		
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		        pageNo++;
-		        openPDFPage(pageNo);
+		    	if (pageNo != pdfFile.getNumberOfPages()){
+		    		pageNo++;
+		        	openPDFPage(pageNo);
+		    	}
 		    }
 		});
 		
 		pageNumber.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				pageNo = Integer.parseInt(pageNumber.getText());
+				try {
+					pageNo = Integer.parseInt(pageNumber.getText());
+				} catch (NumberFormatException exception){
+					
+				}
 				openPDFPage(pageNo);
 			}
 		});
@@ -85,10 +91,11 @@ public class MainWindowController {
         Image image = null;
         try {
 			image = SwingFXUtils.toFXImage(renderer.renderImage(pageNo), null);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
         pdfContainer.setImage(image);
+        pageNumber.setText("" + pageNo);
 	}
 
 	private void anchorPaneListeners() {
