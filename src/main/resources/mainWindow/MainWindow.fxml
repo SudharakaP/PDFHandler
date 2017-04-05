@@ -46,14 +46,14 @@
                <children>
                   <Button fx:id="prevButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Prev" />
                   <Button fx:id="nextButton" contentDisplay="CENTER" layoutX="140.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Next" />
-                  <TextField fx:id="pageNumber" layoutX="66.0" prefHeight="25.0" prefWidth="66.0" />
+                  <TextField fx:id="pageNumber" alignment="CENTER" layoutX="66.0" prefHeight="25.0" prefWidth="66.0" promptText="Page No" />
                </children>
             </Group>
          </children>
       </HBox>        
       <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutY="58.0" prefHeight="456.0" prefWidth="660.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="58.0">
          <content>
-            <HBox fx:id="pdfContainerHBox" alignment="CENTER" prefHeight="402.0" prefWidth="645.0">
+            <HBox alignment="CENTER" prefHeight="402.0" prefWidth="645.0">
                <children>
                   <ImageView fx:id="pdfContainer" fitHeight="444.0" fitWidth="645.0" pickOnBounds="true" preserveRatio="true" />
                </children>

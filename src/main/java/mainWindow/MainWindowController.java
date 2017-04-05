@@ -8,6 +8,8 @@ import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -25,6 +27,9 @@ public class MainWindowController {
 	@FXML Button prevButton;
 	@FXML Button nextButton;
 	@FXML TextField pageNumber;
+	
+	private int pageNo = 0;
+	private PDDocument pdfFile;
 
 	@FXML
 	private void clickOpen() throws IOException {
@@ -33,7 +38,7 @@ public class MainWindowController {
 	}
 
 	private void openPDFFile(File selectedFile) {
-		PDDocument pdfFile = null;
+		
 		
 		if (selectedFile == null){
 			return;
@@ -45,15 +50,48 @@ public class MainWindowController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		PDFRenderer renderer = new PDFRenderer(pdfFile);
-		Image image = null;
-		try {
-			image = SwingFXUtils.toFXImage(renderer.renderImage(0), null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		pdfContainer.setImage(image);
+		openPDFPage(pageNo);
 		
+		anchorPaneListeners();
+		navButtonListeners();
+		
+	}
+
+	private void navButtonListeners() {
+		prevButton.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		        pageNo--;
+		        openPDFPage(pageNo);
+		    }
+		});
+		
+		nextButton.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		        pageNo++;
+		        openPDFPage(pageNo);
+		    }
+		});
+		
+		pageNumber.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e){
+				pageNo = Integer.parseInt(pageNumber.getText());
+				openPDFPage(pageNo);
+			}
+		});
+	}
+	
+	private void openPDFPage(int pageNo){
+		PDFRenderer renderer = new PDFRenderer(pdfFile);
+        Image image = null;
+        try {
+			image = SwingFXUtils.toFXImage(renderer.renderImage(pageNo), null);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+        pdfContainer.setImage(image);
+	}
+
+	private void anchorPaneListeners() {
 		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {			
     		pdfContainer.setX(pdfContainer.getX() + newVal.doubleValue() - oldVal.doubleValue());	
     		pdfContainer.setFitWidth(pdfContainer.getFitWidth() + newVal.doubleValue() - oldVal.doubleValue());
