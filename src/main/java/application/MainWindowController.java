@@ -15,12 +15,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 public class MainWindowController {
 	
 	@FXML AnchorPane anchorPane;
 	@FXML ImageView pdfContainer;
-	@FXML HBox pdfContainerHBox;
+	@FXML HBox toolBarHBox;
+	@FXML Button prevButton;
+	@FXML Button nextButton;
+	@FXML TextField pageNumber;
 
 	@FXML
 	private void clickOpen() throws IOException {
