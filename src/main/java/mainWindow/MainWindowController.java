@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,6 +37,23 @@ public class MainWindowController {
 	private void clickOpen() throws IOException {
 		File selectedFile = openFileChoser();
 		openPDFFile(selectedFile);
+	}
+	
+	@FXML
+	private void clickExit() {
+		Platform.exit();
+	}
+	
+	@FXML
+	private void clickSave() {
+		if (pdfFile != null){
+			File fileName = savePDFFile();
+			try {
+					pdfFile.save(fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void openPDFFile(File selectedFile) {
@@ -138,6 +156,15 @@ public class MainWindowController {
 		fileChooser.setTitle("Open PDF File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Files", "*.pdf"));
 		File selectedFile = fileChooser.showOpenDialog(anchorPane.getScene().getWindow());
+		return selectedFile;
+	}
+	
+	
+	private File savePDFFile() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save PDF File");
+		fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Files", "*.pdf"));
+		File selectedFile = fileChooser.showSaveDialog(anchorPane.getScene().getWindow());
 		return selectedFile;
 	}
 }
