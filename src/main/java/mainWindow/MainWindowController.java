@@ -73,7 +73,7 @@ public class MainWindowController {
 			public void handle(ScrollEvent event) {
 				if (event.getDeltaY() > 0 && pageNo != 0)
 					openPDFPage(--pageNo);
-				else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages())
+				else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1)
 					openPDFPage(++pageNo);				
 			}			
 		});
@@ -103,12 +103,14 @@ public class MainWindowController {
 				} catch (NumberFormatException exception){
 					
 				}
-				openPDFPage(pageNo);
+				if (pageNo > 0 && pageNo < pdfFile.getNumberOfPages())
+					openPDFPage(pageNo);
 			}
 		});
 	}
 	
 	private void openPDFPage(int pageNo){
+		int displayNo = pageNo + 1;
 		PDFRenderer renderer = new PDFRenderer(pdfFile);
         Image image = null;
         try {
@@ -117,7 +119,7 @@ public class MainWindowController {
 			e.printStackTrace();
 		}
         pdfContainer.setImage(image);
-        pageNumber.setText("" + pageNo);
+        pageNumber.setText("" + displayNo);
 	}
 
 	private void anchorPaneListeners() {
