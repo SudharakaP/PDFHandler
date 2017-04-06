@@ -15,6 +15,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -50,17 +52,38 @@ public class MainWindowController {
 		}
 		openPDFPage(pageNo);
 		
+		pdfContainer.preserveRatioProperty();
 		anchorPaneListeners();
 		navButtonListeners();
-		
+		scrollListeners();
+	}
+
+	private void zoomListeners() {
+		pdfContainer.setOnZoomStarted(new EventHandler<ZoomEvent>(){
+			@Override
+			public void handle(ZoomEvent event) {
+				pdfContainer.setScaleX(event.getZoomFactor() * pdfContainer.getScaleX());
+			}
+		});	
+	}
+	
+	private void scrollListeners(){
+		pdfContainer.setOnScroll(new EventHandler<ScrollEvent>(){
+			@Override
+			public void handle(ScrollEvent event) {
+				if (event.getDeltaY() > 0 && pageNo != 0)
+					openPDFPage(--pageNo);
+				else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages())
+					openPDFPage(++pageNo);				
+			}			
+		});
 	}
 
 	private void navButtonListeners() {
 		prevButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	if (pageNo != 0){
-		    		pageNo--;
-		    		openPDFPage(pageNo);
+		    		openPDFPage(--pageNo);
 		    	}
 		    }
 		});
@@ -68,8 +91,7 @@ public class MainWindowController {
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	if (pageNo != pdfFile.getNumberOfPages()){
-		    		pageNo++;
-		        	openPDFPage(pageNo);
+		        	openPDFPage(++pageNo);
 		    	}
 		    }
 		});
@@ -101,13 +123,11 @@ public class MainWindowController {
 	private void anchorPaneListeners() {
 		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {			
     		pdfContainer.setX(pdfContainer.getX() + newVal.doubleValue() - oldVal.doubleValue());	
-    		pdfContainer.setFitWidth(pdfContainer.getFitWidth() + newVal.doubleValue() - oldVal.doubleValue());
-			pdfContainer.preserveRatioProperty();
+    		pdfContainer.setFitWidth(pdfContainer.getFitWidth() + newVal.doubleValue() - oldVal.doubleValue());			
 		});
 		
 		anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
 			pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
-			pdfContainer.preserveRatioProperty();
 		});
 	}
 
