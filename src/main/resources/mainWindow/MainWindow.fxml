@@ -19,7 +19,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#clickOpen" text="Open                              Ctrl+O" />
                   <MenuItem mnemonicParsing="false" onAction="#clickSave" text="Save                                Ctrl+S" />
-                  <MenuItem mnemonicParsing="false" text="Print                                Ctrl+P" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickPrint" text="Print                                Ctrl+P" />
                   <MenuItem mnemonicParsing="false" onAction="#clickExit" text="Exit" />
             </items>
           </Menu>
@@ -27,7 +27,7 @@
             <items>
                   <MenuItem mnemonicParsing="false" text="Undo                               Ctrl+Z" />
                   <MenuItem mnemonicParsing="false" text="Redo                               Ctrl+Y" />
-              <MenuItem mnemonicParsing="false" text="Remove Page(s)    Ctrl+Shift+R" />
+              <MenuItem mnemonicParsing="false" onAction="#clickRemovePage" text="Remove Page(s)    Ctrl+Shift+R" />
                   <MenuItem mnemonicParsing="false" text="Add Page(s)          Ctrl+Shift+A" />
                   <MenuItem mnemonicParsing="false" text="Crop Page                       Ctrl+C" />
                   <MenuItem mnemonicParsing="false" text="Rotate Page                    Ctrl+R" />

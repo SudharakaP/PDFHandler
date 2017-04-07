@@ -93,6 +93,14 @@ public class MainWindowController {
 		navButtonListeners();
 		scrollListeners();
 	}
+	
+	@FXML
+	private void clickRemovePage(){
+		if (pdfFile != null){
+			pdfFile.removePage(pageNo);
+			nextButton.fire();
+		}
+	}
 
 	private void zoomListeners() {
 		pdfContainer.setOnZoomStarted(new EventHandler<ZoomEvent>(){
