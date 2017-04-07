@@ -1,5 +1,7 @@
 package mainWindow;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 
@@ -48,11 +50,27 @@ public class MainWindowController {
 	private void clickSave() {
 		if (pdfFile != null){
 			File fileName = savePDFFile();
-			try {
+			if (fileName != null){
+				try {
 					pdfFile.save(fileName);
-			} catch (IOException e) {
-				e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+	}
+	
+	@FXML
+	private void clickPrint(){
+		if (pdfFile != null){
+			PrinterJob job = PrinterJob.getPrinterJob();
+			if (job.printDialog()) {
+		        try {
+		        	job.print();
+		        } catch (PrinterException e) {
+		        	e.printStackTrace();
+		         }
+		     }
 		}
 	}
 
