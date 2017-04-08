@@ -134,7 +134,7 @@ public class MainWindowController {
 		
 		nextButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		    	if (pageNo != pdfFile.getNumberOfPages()){
+		    	if (pageNo != pdfFile.getNumberOfPages() - 1){
 		        	openPDFPage(++pageNo);
 		    	}
 		    }
@@ -143,11 +143,11 @@ public class MainWindowController {
 		pageNumber.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				try {
-					pageNo = Integer.parseInt(pageNumber.getText());
+					pageNo = Integer.parseInt(pageNumber.getText()) - 1;
 				} catch (NumberFormatException exception){
 					
 				}
-				if (pageNo > 0 && pageNo < pdfFile.getNumberOfPages())
+				if (pageNo >= 0 && pageNo < pdfFile.getNumberOfPages())
 					openPDFPage(pageNo);
 			}
 		});
