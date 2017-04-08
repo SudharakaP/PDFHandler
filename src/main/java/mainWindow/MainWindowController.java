@@ -101,6 +101,15 @@ public class MainWindowController {
 			openPDFPage(pageNo);
 		}
 	}
+	
+	@FXML
+	private void clickRotatePage(){
+		if (pdfFile != null){
+			
+			//pdfFile.getPage(pageNo).setRotation(degree);
+			openPDFPage(pageNo);
+		}
+	}
 
 	private void zoomListeners() {
 		pdfContainer.setOnZoomStarted(new EventHandler<ZoomEvent>(){

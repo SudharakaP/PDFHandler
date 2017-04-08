@@ -27,10 +27,10 @@
             <items>
                   <MenuItem mnemonicParsing="false" text="Undo                               Ctrl+Z" />
                   <MenuItem mnemonicParsing="false" text="Redo                               Ctrl+Y" />
-              <MenuItem mnemonicParsing="false" onAction="#clickRemovePage" text="Remove Page(s)    Ctrl+Shift+R" />
-                  <MenuItem mnemonicParsing="false" text="Add Page(s)          Ctrl+Shift+A" />
+              <MenuItem mnemonicParsing="false" onAction="#clickRemovePage" text="Remove Current Page    Ctrl+Shift+R" />
+                  <MenuItem mnemonicParsing="false" text="Add Page(s)                    Ctrl+Shift+A" />
                   <MenuItem mnemonicParsing="false" text="Crop Page                       Ctrl+C" />
-                  <MenuItem mnemonicParsing="false" text="Rotate Page                    Ctrl+R" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickRotatePage" text="Rotate Page                    Ctrl+R" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
