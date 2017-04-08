@@ -98,7 +98,7 @@ public class MainWindowController {
 	private void clickRemovePage(){
 		if (pdfFile != null){
 			pdfFile.removePage(pageNo);
-			nextButton.fire();
+			openPDFPage(pageNo);
 		}
 	}
 
