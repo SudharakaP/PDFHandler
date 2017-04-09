@@ -7,8 +7,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<DialogPane prefHeight="115.0" prefWidth="324.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<DialogPane prefHeight="115.0" prefWidth="324.0" style="-fx-border-color: cyan;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <buttonTypes>
       <ButtonType fx:constant="CANCEL" />
       <ButtonType fx:constant="APPLY" />

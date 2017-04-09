@@ -9,19 +9,26 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+import application.Main;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 
 public class MainWindowController {
@@ -105,7 +112,18 @@ public class MainWindowController {
 	@FXML
 	private void clickRotatePage(){
 		if (pdfFile != null){
-			
+			DialogPane rotationDialogPane = null;
+			try {
+				rotationDialogPane = (DialogPane) FXMLLoader.load(Main.class.getResource("../mainWindow/RotationDialog.fxml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Stage stage = new Stage(StageStyle.UNDECORATED);
+			Scene scene = new Scene(rotationDialogPane);
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(anchorPane.getScene().getWindow());
+            stage.show();
 			//pdfFile.getPage(pageNo).setRotation(degree);
 			openPDFPage(pageNo);
 		}
