@@ -224,8 +224,8 @@ public class MainWindowController {
 		return selectedFile;
 	}
 
-	public void rotatePage(int angle) {		
-		pdfFile.getPage(pageNo).setRotation(angle);
+	public void rotatePage(int angle) {				
+		pdfFile.getPage(pageNo).setRotation(angle + pdfFile.getPage(pageNo).getRotation());
 		openPDFPage(pageNo);
 	}
 }
