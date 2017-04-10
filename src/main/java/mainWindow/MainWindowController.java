@@ -41,6 +41,11 @@ public class MainWindowController {
 	
 	private int pageNo = 0;
 	private PDDocument pdfFile;
+	
+	@FXML
+	public void initialize(){
+		Context.getContext().setMainWindow(this);
+	}
 
 	@FXML
 	private void clickOpen() throws IOException {
@@ -124,8 +129,6 @@ public class MainWindowController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(anchorPane.getScene().getWindow());
             stage.show();
-			//pdfFile.getPage(pageNo).setRotation(degree);
-			openPDFPage(pageNo);
 		}
 	}
 
@@ -179,8 +182,8 @@ public class MainWindowController {
 			}
 		});
 	}
-	
-	private void openPDFPage(int pageNo){
+
+	protected void openPDFPage(int pageNo){
 		int displayNo = pageNo + 1;
 		PDFRenderer renderer = new PDFRenderer(pdfFile);
         Image image = null;
@@ -219,5 +222,10 @@ public class MainWindowController {
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Files", "*.pdf"));
 		File selectedFile = fileChooser.showSaveDialog(anchorPane.getScene().getWindow());
 		return selectedFile;
+	}
+
+	public void rotatePage(int angle) {		
+		pdfFile.getPage(pageNo).setRotation(angle);
+		openPDFPage(pageNo);
 	}
 }
