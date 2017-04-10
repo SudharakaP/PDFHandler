@@ -37,6 +37,9 @@ public class RotationDialogController {
 		keyListeners();
 	}
 	
+	/**
+	 * Listens to Apply button click in the Edit -> Rotate Page dialog box.
+	 */
 	private void keyListeners(){
 		applyButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override

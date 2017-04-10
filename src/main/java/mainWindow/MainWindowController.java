@@ -47,17 +47,27 @@ public class MainWindowController {
 		Context.getContext().setMainWindow(this);
 	}
 
+	/**
+	 *  Action method for File -> Open menu item.
+	 * @throws IOException
+	 */
 	@FXML
 	private void clickOpen() throws IOException {
 		File selectedFile = openFileChoser();
 		openPDFFile(selectedFile);
 	}
 	
+	/**
+	 *  Action method for File -> Exit menu item.
+	 */
 	@FXML
 	private void clickExit() {
 		Platform.exit();
 	}
 	
+	/**
+	 *  Action method for File -> Save menu item.
+	 */
 	@FXML
 	private void clickSave() {
 		if (pdfFile != null){
@@ -72,6 +82,9 @@ public class MainWindowController {
 		}
 	}
 	
+	/**
+	 *  Action method for File -> Print menu item.
+	 */
 	@FXML
 	private void clickPrint(){
 		if (pdfFile != null){
@@ -86,6 +99,10 @@ public class MainWindowController {
 		}
 	}
 
+	/**
+	 * Open selected PDF file.
+	 * @param selectedFile
+	 */
 	private void openPDFFile(File selectedFile) {
 		
 		if (selectedFile == null){
@@ -106,6 +123,9 @@ public class MainWindowController {
 		scrollListeners();
 	}
 	
+	/**
+	 * Action method for Edit -> Remove Current Page menu item.
+	 */
 	@FXML
 	private void clickRemovePage(){
 		if (pdfFile != null){
@@ -114,6 +134,9 @@ public class MainWindowController {
 		}
 	}
 	
+	/**
+	 * Action method for Edit -> Rotate Page menu item.
+	 */
 	@FXML
 	private void clickRotatePage(){
 		if (pdfFile != null){
@@ -141,6 +164,9 @@ public class MainWindowController {
 		});	
 	}
 	
+	/**
+	 * Listens to mouse scrolls
+	 */
 	private void scrollListeners(){
 		pdfContainer.setOnScroll(new EventHandler<ScrollEvent>(){
 			@Override
@@ -153,6 +179,9 @@ public class MainWindowController {
 		});
 	}
 
+	/**
+	 * Listens to next (nextButton) and previous (nextButton) button clicks
+	 */
 	private void navButtonListeners() {
 		prevButton.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
@@ -183,6 +212,10 @@ public class MainWindowController {
 		});
 	}
 
+	/**
+	 * Opens/Displays the PDF page by converting it into a BufferedImage object
+	 * @param pageNo
+	 */
 	protected void openPDFPage(int pageNo){
 		int displayNo = pageNo + 1;
 		PDFRenderer renderer = new PDFRenderer(pdfFile);
@@ -196,6 +229,9 @@ public class MainWindowController {
         pageNumber.setText("" + displayNo);
 	}
 
+	/**
+	 * Listeners for the AnchorPane which embeds the main window. 
+	 */
 	private void anchorPaneListeners() {
 		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {			
     		pdfContainer.setX(pdfContainer.getX() + newVal.doubleValue() - oldVal.doubleValue());	
@@ -207,6 +243,10 @@ public class MainWindowController {
 		});
 	}
 
+	/**
+	 * Opens the file chooser dialog.
+	 * @return the chosen file path
+	 */
 	private File openFileChoser() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open PDF File");
@@ -216,6 +256,10 @@ public class MainWindowController {
 	}
 	
 	
+	/**
+	 * Opens the file saving dialog.
+	 * @return the selected filepath
+	 */
 	private File savePDFFile() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save PDF File");
@@ -224,6 +268,10 @@ public class MainWindowController {
 		return selectedFile;
 	}
 
+	/**
+	 * Handles the rotation of pages.
+	 * @param angle
+	 */
 	public void rotatePage(int angle) {				
 		pdfFile.getPage(pageNo).setRotation(angle + pdfFile.getPage(pageNo).getRotation());
 		openPDFPage(pageNo);
