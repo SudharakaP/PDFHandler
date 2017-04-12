@@ -48,7 +48,7 @@ public class MainWindowController {
 	}
 
 	/**
-	 *  Action method for File -> Open menu item.
+	 * Action method for File -> Open menu item.
 	 * @throws IOException
 	 */
 	@FXML
