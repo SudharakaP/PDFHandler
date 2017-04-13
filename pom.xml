@@ -4,7 +4,7 @@
 	<groupId>PDFHandler2</groupId>
 	<artifactId>PDFHandler2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PDFHandler2</name>
+	<name>PDFHandler</name>
 	<!-- https://mvnrepository.com/artifact/org.jpedal/OpenViewerFX -->
 	<dependencies>
 		<dependency>
@@ -23,18 +23,30 @@
 			<artifactId>jfxtras-common</artifactId>
 			<version>8.0-r5</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx -->
+		<dependency>
+			<groupId>de.jensd</groupId>
+			<artifactId>fontawesomefx-commons</artifactId>
+			<version>8.15</version>
+		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>bintray</id>
+			<url>https://dl.bintray.com/jerady/maven</url>
+		</repository>
+	</repositories>
 	<build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
