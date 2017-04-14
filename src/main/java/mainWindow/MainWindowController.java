@@ -23,13 +23,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.Group;
 
 public class MainWindowController {
 	
@@ -38,13 +41,20 @@ public class MainWindowController {
 	@FXML Button prevButton;
 	@FXML Button nextButton;
 	@FXML TextField pageNumber;
+	@FXML Button zoomInButton;
+	@FXML Button zoomOutButton;
+	@FXML ScrollPane scrollPane;
+	@FXML HBox pdfContainerHBox;
+	@FXML Group groupContainer;
 	
 	private int pageNo = 0;
 	private PDDocument pdfFile;
-	
+	private int endOfPageScrollCount;
+		
 	@FXML
 	public void initialize(){
 		Context.getContext().setMainWindow(this);
+		scrollPane.setContent(groupContainer);
 	}
 
 	/**
@@ -121,6 +131,7 @@ public class MainWindowController {
 		anchorPaneListeners();
 		navButtonListeners();
 		scrollListeners();
+		zoomListeners();
 	}
 	
 	/**
@@ -156,12 +167,21 @@ public class MainWindowController {
 	}
 
 	private void zoomListeners() {
-		pdfContainer.setOnZoomStarted(new EventHandler<ZoomEvent>(){
+		zoomInButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
-			public void handle(ZoomEvent event) {
-				pdfContainer.setScaleX(event.getZoomFactor() * pdfContainer.getScaleX());
-			}
-		});	
+			public void handle(MouseEvent event) {
+				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());	
+				pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());	
+			}		
+		});
+		
+		zoomOutButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				pdfContainer.setScaleX(0.5 * pdfContainer.getScaleX());
+				pdfContainer.setScaleY(0.5 * pdfContainer.getScaleY());
+			}		
+		});
 	}
 	
 	/**
@@ -171,10 +191,22 @@ public class MainWindowController {
 		pdfContainer.setOnScroll(new EventHandler<ScrollEvent>(){
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0 && pageNo != 0)
-					openPDFPage(--pageNo);
-				else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1)
-					openPDFPage(++pageNo);				
+				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){
+					if (endOfPageScrollCount == 3){
+						openPDFPage(--pageNo);
+						endOfPageScrollCount = 0;
+					}else{
+						endOfPageScrollCount++;
+					}
+				} else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1 
+						&& scrollPane.vvalueProperty().get() == scrollPane.getVmax()) {
+					if (endOfPageScrollCount == 3){
+						openPDFPage(++pageNo);
+						endOfPageScrollCount = 0;
+					}else{
+						endOfPageScrollCount++;
+					}
+				}
 			}			
 		});
 	}
@@ -227,6 +259,7 @@ public class MainWindowController {
 		}
         pdfContainer.setImage(image);
         pageNumber.setText("" + displayNo);
+        scrollPane.setVvalue(scrollPane.getVmin());
 	}
 
 	/**
