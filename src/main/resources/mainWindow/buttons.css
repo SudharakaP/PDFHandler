@@ -1,0 +1,17 @@
+#zoomInButton {
+    -fx-background-image:url('buttonImages/zoom-in.png');
+    -fx-background-color: transparent;
+    -fx-background-repeat:no-repeat;
+    -fx-background-position:center;
+    -fx-background-size:20px 20px;
+    -fx-background-radius:5em
+}
+
+#zoomOutButton {
+    -fx-background-image:url('buttonImages/zoom-out.png');
+    -fx-background-color: transparent;
+    -fx-background-repeat:no-repeat;
+    -fx-background-position:center;
+    -fx-background-size:20px 20px;
+    -fx-background-radius:5em
+}

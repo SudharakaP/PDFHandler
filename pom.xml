@@ -23,19 +23,7 @@
 			<artifactId>jfxtras-common</artifactId>
 			<version>8.0-r5</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/de.jensd/fontawesomefx -->
-		<dependency>
-			<groupId>de.jensd</groupId>
-			<artifactId>fontawesomefx-commons</artifactId>
-			<version>8.15</version>
-		</dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>bintray</id>
-			<url>https://dl.bintray.com/jerady/maven</url>
-		</repository>
-	</repositories>
 	<build>
 		<plugins>
 			<plugin>

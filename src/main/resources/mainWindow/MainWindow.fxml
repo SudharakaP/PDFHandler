@@ -42,6 +42,8 @@
       </MenuBar>
       <HBox alignment="CENTER" layoutY="30.0" prefHeight="26.0" prefWidth="660.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
+            <Button fx:id="zoomInButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" stylesheets="@buttons.css" textFill="TRANSPARENT" />
+            <Button fx:id="zoomOutButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" style="-fx-background-repeat: false;" stylesheets="@buttons.css" />
             <Group>
                <children>
                   <Button fx:id="prevButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" text="Prev" />
