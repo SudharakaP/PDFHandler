@@ -47,7 +47,7 @@
             <Group>
                <children>
                   <Button fx:id="zoomInButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="27.0" stylesheets="@buttons.css" textFill="TRANSPARENT" />
-                  <TextField layoutX="33.0" prefHeight="25.0" prefWidth="52.0" />
+                  <TextField fx:id="zoomLevel" layoutX="33.0" prefHeight="25.0" prefWidth="52.0" />
                   <Button fx:id="zoomOutButton" layoutX="90.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" stylesheets="@buttons.css" />
                </children>
             </Group>

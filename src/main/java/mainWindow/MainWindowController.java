@@ -46,11 +46,12 @@ public class MainWindowController {
 	@FXML ScrollPane scrollPane;
 	@FXML HBox pdfContainerHBox;
 	@FXML Group groupContainer;
+	@FXML TextField zoomLevel;
 	
 	private int pageNo = 0;
 	private PDDocument pdfFile;
-	private int endOfPageScrollCount;
-		
+	private float pdfPageSize;
+	
 	@FXML
 	public void initialize(){
 		Context.getContext().setMainWindow(this);
@@ -172,14 +173,16 @@ public class MainWindowController {
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());	
 				pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());	
+				zoomLevel.setText((100 * pdfContainer.getImage().getHeight() * 1.5 / pdfPageSize) + "%");
 			}		
 		});
 		
 		zoomOutButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				pdfContainer.setScaleX(0.5 * pdfContainer.getScaleX());
-				pdfContainer.setScaleY(0.5 * pdfContainer.getScaleY());
+				pdfContainer.setScaleX(2.0 * pdfContainer.getScaleX() / 3.0);
+				pdfContainer.setScaleY(2.0 * pdfContainer.getScaleY() / 3.0);
+				zoomLevel.setText((100 * pdfContainer.getImage().getHeight() * 2.0 / (pdfPageSize * 3.0)) + "%");
 			}		
 		});
 	}
@@ -250,6 +253,8 @@ public class MainWindowController {
         pdfContainer.setImage(image);
         pageNumber.setText("" + displayNo);
         scrollPane.setVvalue(scrollPane.getVmin());
+        pdfPageSize = pdfFile.getPage(pageNo).getMediaBox().getHeight();
+        zoomLevel.setText(Math.round(100 * pdfContainer.getFitHeight() / pdfPageSize * 100.0 / 100.0) + "%");
 	}
 
 	/**
