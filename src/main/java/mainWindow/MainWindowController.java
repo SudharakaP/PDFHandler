@@ -4,6 +4,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
@@ -51,6 +52,7 @@ public class MainWindowController {
 	private int pageNo = 0;
 	private PDDocument pdfFile;
 	private float pdfPageSize;
+	private double formattedZoomLevel;
 	
 	@FXML
 	public void initialize(){
@@ -173,7 +175,9 @@ public class MainWindowController {
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());	
 				pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());	
-				zoomLevel.setText((100 * pdfContainer.getImage().getHeight() * 1.5 / pdfPageSize) + "%");
+				double zoom = 100 * pdfContainer.getFitHeight() * pdfContainer.getScaleY() / pdfPageSize;
+				setFormatedZoomLevel(zoom);
+				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
 		});
 		
@@ -182,16 +186,24 @@ public class MainWindowController {
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(2.0 * pdfContainer.getScaleX() / 3.0);
 				pdfContainer.setScaleY(2.0 * pdfContainer.getScaleY() / 3.0);
-				zoomLevel.setText((100 * pdfContainer.getImage().getHeight() * 2.0 / (pdfPageSize * 3.0)) + "%");
+				double zoom = 100 * pdfContainer.getFitHeight() * pdfContainer.getScaleY() / pdfPageSize;
+				setFormatedZoomLevel(zoom);
+				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
 		});
+	}
+	
+	private void setFormatedZoomLevel(double zoomLevel){
+		BigDecimal bigDecimal = new BigDecimal(zoomLevel);
+        bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP);
+        formattedZoomLevel = bigDecimal.doubleValue();
 	}
 	
 	/**
 	 * Listens to mouse scrolls
 	 */
 	private void scrollListeners(){
-		groupContainer.setOnScroll(new EventHandler<ScrollEvent>(){
+		scrollPane.setOnScroll(new EventHandler<ScrollEvent>(){
 			@Override
 			public void handle(ScrollEvent event) {
 				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){			
@@ -246,7 +258,7 @@ public class MainWindowController {
 		PDFRenderer renderer = new PDFRenderer(pdfFile);
         Image image = null;
         try {
-			image = SwingFXUtils.toFXImage(renderer.renderImage(pageNo), null);
+			image = SwingFXUtils.toFXImage(renderer.renderImageWithDPI(pageNo, 500), null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,7 +266,10 @@ public class MainWindowController {
         pageNumber.setText("" + displayNo);
         scrollPane.setVvalue(scrollPane.getVmin());
         pdfPageSize = pdfFile.getPage(pageNo).getMediaBox().getHeight();
-        zoomLevel.setText(Math.round(100 * pdfContainer.getFitHeight() / pdfPageSize * 100.0 / 100.0) + "%");
+        
+        if (formattedZoomLevel == 0)
+        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
+        zoomLevel.setText(formattedZoomLevel + "%");
 	}
 
 	/**
