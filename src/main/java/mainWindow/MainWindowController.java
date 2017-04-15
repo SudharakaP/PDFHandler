@@ -188,24 +188,14 @@ public class MainWindowController {
 	 * Listens to mouse scrolls
 	 */
 	private void scrollListeners(){
-		pdfContainer.setOnScroll(new EventHandler<ScrollEvent>(){
+		groupContainer.setOnScroll(new EventHandler<ScrollEvent>(){
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){
-					if (endOfPageScrollCount == 3){
+				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){			
 						openPDFPage(--pageNo);
-						endOfPageScrollCount = 0;
-					}else{
-						endOfPageScrollCount++;
-					}
 				} else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1 
-						&& scrollPane.vvalueProperty().get() == scrollPane.getVmax()) {
-					if (endOfPageScrollCount == 3){
+						&& scrollPane.vvalueProperty().get() == scrollPane.getVmax()) {				
 						openPDFPage(++pageNo);
-						endOfPageScrollCount = 0;
-					}else{
-						endOfPageScrollCount++;
-					}
 				}
 			}			
 		});
@@ -266,9 +256,8 @@ public class MainWindowController {
 	 * Listeners for the AnchorPane which embeds the main window. 
 	 */
 	private void anchorPaneListeners() {
-		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {			
-    		pdfContainer.setX(pdfContainer.getX() + newVal.doubleValue() - oldVal.doubleValue());	
-    		pdfContainer.setFitWidth(pdfContainer.getFitWidth() + newVal.doubleValue() - oldVal.doubleValue());			
+		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+			pdfContainer.setTranslateX(pdfContainer.getTranslateX() + 0.5 * (newVal.doubleValue() - oldVal.doubleValue()));				
 		});
 		
 		anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
