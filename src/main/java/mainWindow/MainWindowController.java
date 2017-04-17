@@ -191,8 +191,27 @@ public class MainWindowController {
 				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
 		});
+		
+		zoomLevel.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					String zoom = zoomLevel.getText();
+					pdfContainer.setFitHeight(pdfPageSize * Integer.parseInt(zoom) / 100);
+					zoomLevel.setText(zoom + "%");
+				} catch (NumberFormatException exception){
+					// Do nothing on invalid input to the textbox
+				}
+			}		
+		});
 	}
+
 	
+	/**
+	 * Formats the zoom level that is displayed in the textbox
+	 * 
+	 * @param zoomLevel
+	 */
 	private void setFormatedZoomLevel(double zoomLevel){
 		BigDecimal bigDecimal = new BigDecimal(zoomLevel);
         bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP);
@@ -241,7 +260,7 @@ public class MainWindowController {
 				try {
 					pageNo = Integer.parseInt(pageNumber.getText()) - 1;
 				} catch (NumberFormatException exception){
-					
+					// Do nothing on invalid input to the textbox
 				}
 				if (pageNo >= 0 && pageNo < pdfFile.getNumberOfPages())
 					openPDFPage(pageNo);
