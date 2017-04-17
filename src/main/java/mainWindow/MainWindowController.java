@@ -301,6 +301,10 @@ public class MainWindowController {
 		
 		anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
 			pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
+			if (formattedZoomLevel != 0){
+	        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
+	        	zoomLevel.setText(formattedZoomLevel + "%");
+			}
 		});
 	}
 
