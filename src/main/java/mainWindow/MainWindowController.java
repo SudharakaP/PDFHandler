@@ -197,7 +197,10 @@ public class MainWindowController {
 			public void handle(ActionEvent event) {
 				try {
 					String zoom = zoomLevel.getText();
-					pdfContainer.setFitHeight(pdfPageSize * Integer.parseInt(zoom) / 100);
+					if (zoom.contains("%")){
+						zoom = zoom.replace("%", "");
+					}
+					pdfContainer.setFitHeight(pdfPageSize * Double.parseDouble(zoom) / 100);
 					zoomLevel.setText(zoom + "%");
 				} catch (NumberFormatException exception){
 					// Do nothing on invalid input to the textbox
