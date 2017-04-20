@@ -43,6 +43,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
@@ -107,6 +109,8 @@ public class MainWindowController {
 					e.printStackTrace();
 				}
 			}
+		} else {
+			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 	
@@ -124,7 +128,17 @@ public class MainWindowController {
 		        	e.printStackTrace();
 		         }
 		     }
+		} else {
+			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
 		}
+	}
+
+	private void showInfoDialog(String title, String header, String contentText) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(contentText);
+		alert.showAndWait();
 	}
 
 	/**
@@ -160,6 +174,8 @@ public class MainWindowController {
 		if (pdfFile != null){
 			pdfFile.removePage(pageNo);
 			openPDFPage(pageNo);
+		} else {
+			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 	
@@ -181,6 +197,8 @@ public class MainWindowController {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(anchorPane.getScene().getWindow());
             stage.show();
+		} else {
+			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 
