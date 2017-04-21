@@ -150,6 +150,13 @@ public class MainWindowController {
 		if (selectedFile == null){
 			return;
 		}
+		if (pdfFile != null){
+			try {
+				pdfFile.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} 
 		try {
 			pdfFile = PDDocument.load(selectedFile);
 		} catch (InvalidPasswordException e) {
@@ -157,7 +164,7 @@ public class MainWindowController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		openPDFPage(pageNo);
+		openPDFPage(pageNo = 0);
 		
 		pdfContainer.preserveRatioProperty();
 		anchorPaneListeners();
