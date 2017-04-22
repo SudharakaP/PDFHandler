@@ -384,4 +384,8 @@ public class MainWindowController {
 		pdfFile.getPage(pageNo).setRotation(angle + pdfFile.getPage(pageNo).getRotation());
 		openPDFPage(pageNo);
 	}
+
+	@FXML public void clickAddPage() {
+		
+	}
 }
