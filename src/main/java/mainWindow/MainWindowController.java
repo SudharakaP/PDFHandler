@@ -385,7 +385,7 @@ public class MainWindowController {
 		openPDFPage(pageNo);
 	}
 
-	@FXML public void clickAddPage() {
+	@FXML public void clickMergePDF(ActionEvent event) {
 		
 	}
 }

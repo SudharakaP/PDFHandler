@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright 2017 Sudharaka Palamakumbura
+  
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License.  You may obtain a copy
+  of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+  License for the specific language governing permissions and limitations under
+  the License.
+-->
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.HBox?>
+
+<DialogPane fx:id="dialogPane" prefHeight="115.0" prefWidth="324.0" style="-fx-border-color: cyan;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainWindow.RotationDialogController">
+   <buttonTypes>
+      <ButtonType fx:constant="CANCEL" />
+      <ButtonType fx:constant="APPLY" />
+   </buttonTypes>
+   <content>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="149.0" text="Select PDF to Merge: " textAlignment="CENTER" />
+            <TextField promptText="Choose PDF" />
+         </children>
+      </HBox>
+   </content>
+   <header>
+      <TitledPane collapsible="false" prefHeight="24.0" prefWidth="324.0" text="Merge PDFs" />
+   </header>
+</DialogPane>

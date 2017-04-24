@@ -40,18 +40,18 @@
                   <MenuItem mnemonicParsing="false" onAction="#clickExit" text="Exit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#clickAddPage" text="Edit">
+          <Menu mnemonicParsing="false" text="Edit">
             <items>
                   <MenuItem mnemonicParsing="false" text="Undo                               Ctrl+Z" />
                   <MenuItem mnemonicParsing="false" text="Redo                               Ctrl+Y" />
               <MenuItem mnemonicParsing="false" onAction="#clickRemovePage" text="Remove Current Page    Ctrl+Shift+R" />
-                  <MenuItem mnemonicParsing="false" text="Add Page(s)                    Ctrl+Shift+A" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickMergePDF" text="Merge PDFs" />
                   <MenuItem mnemonicParsing="false" text="Crop Page                       Ctrl+C" />
                   <MenuItem mnemonicParsing="false" onAction="#clickRotatePage" text="Rotate Page                    Ctrl+R" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
-            <items>
+            <items>s
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
