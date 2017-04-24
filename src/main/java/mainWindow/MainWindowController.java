@@ -386,6 +386,25 @@ public class MainWindowController {
 	}
 
 	@FXML public void clickMergePDF(ActionEvent event) {
+		if (pdfFile != null){
+			DialogPane mergeDialogPane = null;
+			try {
+				mergeDialogPane = (DialogPane) FXMLLoader.load(Main.class.getResource("../mainWindow/MergePDFDialog.fxml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Stage stage = new Stage(StageStyle.UNDECORATED);
+			Scene scene = new Scene(mergeDialogPane);
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(anchorPane.getScene().getWindow());
+            stage.show();
+		} else {
+			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
+		}
+	}
+
+	public void mergePDFFiles(String pdfFile) {
 		
 	}
 }
