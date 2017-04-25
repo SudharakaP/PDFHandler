@@ -41,6 +41,7 @@ public class MergePDFDialogController {
 	
 	@FXML 
 	public void initialize(){
+		mainWindowController = Context.getContext().getMainWindow();
 		applyButton = dialogPane.lookupButton(ButtonType.APPLY);
 		cancelButton = dialogPane.lookupButton(ButtonType.CANCEL);
 		keyListeners();

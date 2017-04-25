@@ -18,9 +18,11 @@ package mainWindow;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -70,6 +72,7 @@ public class MainWindowController {
 	private PDDocument pdfFile;
 	private float pdfPageSize;
 	private double formattedZoomLevel;
+	private File selectedFile;
 	
 	@FXML
 	public void initialize(){
@@ -83,7 +86,7 @@ public class MainWindowController {
 	 */
 	@FXML
 	private void clickOpen() throws IOException {
-		File selectedFile = openFileChoser();
+		selectedFile = openFileChoser();
 		openPDFFile(selectedFile);
 	}
 	
@@ -405,6 +408,17 @@ public class MainWindowController {
 	}
 
 	public void mergePDFFiles(String pdfFile) {
-		
+		PDFMergerUtility pdfMerger = new PDFMergerUtility();
+		try {
+			pdfMerger.addSource(selectedFile);
+			pdfMerger.addSource(new File(pdfFile));		
+			pdfMerger.setDestinationFileName(selectedFile.getAbsolutePath());
+			pdfMerger.mergeDocuments(null);
+ 			showInfoDialog("Done", "PDF Merge Successful!", "The pdf files, " + 
+			selectedFile.getName() + " and " + pdfFile + " has been merged sucessfully.");
+ 			openPDFFile(selectedFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 }
