@@ -183,7 +183,10 @@ public class MainWindowController {
 	private void clickRemovePage(){
 		if (pdfFile != null){
 			pdfFile.removePage(pageNo);
-			openPDFPage(pageNo);
+			if (pageNo != pdfFile.getNumberOfPages())
+				openPDFPage(pageNo);
+			else 
+				openPDFPage(--pageNo);
 		} else {
 			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
 		}
