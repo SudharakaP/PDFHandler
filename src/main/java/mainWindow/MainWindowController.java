@@ -18,7 +18,6 @@ package mainWindow;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -148,7 +147,7 @@ public class MainWindowController {
 	 * Open selected PDF file.
 	 * @param selectedFile
 	 */
-	private void openPDFFile(File selectedFile) {
+	protected void openPDFFile(File selectedFile) {
 		
 		if (selectedFile == null){
 			return;
@@ -361,7 +360,7 @@ public class MainWindowController {
 	 * Opens the file chooser dialog.
 	 * @return the chosen file path
 	 */
-	private File openFileChoser() {
+	protected File openFileChoser() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open PDF File");
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("PDF Files", "*.pdf"));
@@ -391,7 +390,8 @@ public class MainWindowController {
 		openPDFPage(pageNo);
 	}
 
-	@FXML public void clickMergePDF(ActionEvent event) {
+	@FXML 
+	private void clickMergePDF() {
 		if (pdfFile != null){
 			DialogPane mergeDialogPane = null;
 			try {

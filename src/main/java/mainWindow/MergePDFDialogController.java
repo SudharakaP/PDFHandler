@@ -15,6 +15,8 @@
  ******************************************************************************/
 package mainWindow;
 
+import java.io.File;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -34,10 +36,12 @@ public class MergePDFDialogController {
 	
 	private Node applyButton;
 	private Node cancelButton;
+	private File mergePDFFile;
 	
 	private MainWindowController mainWindowController;
 
-	@FXML TextField mergePDFFile;
+	@FXML 
+	private TextField mergePDFFileName;
 	
 	@FXML 
 	public void initialize(){
@@ -48,13 +52,13 @@ public class MergePDFDialogController {
 	}
 	
 	/**
-	 * Listens to Apply button click in the Edit -> Rotate Page dialog box.
+	 * Listens to Apply button and cancel button click in the Edit -> Merge PDFs dialog box.
 	 */
 	private void keyListeners(){
 		applyButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				String pdfFile = mergePDFFile.getText();
+				String pdfFile = mergePDFFileName.getText();
 				if (pdfFile == null){
 					return;
 				}
@@ -76,4 +80,9 @@ public class MergePDFDialogController {
 			}
 		});
 	}
+
+	@FXML public void clickChoosePDF() {
+		mergePDFFile = mainWindowController.openFileChoser();
+		mergePDFFileName.setText(mergePDFFile.getAbsolutePath());
+	}	
 }

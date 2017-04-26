@@ -32,7 +32,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="149.0" text="Select PDF to Merge: " textAlignment="CENTER" />
-            <TextField fx:id="mergePDFFile" promptText="Choose PDF" />
+            <TextField fx:id="mergePDFFileName" onMouseClicked="#clickChoosePDF" promptText="Choose PDF" />
          </children>
       </HBox>
    </content>
