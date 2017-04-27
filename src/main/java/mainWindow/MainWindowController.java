@@ -28,6 +28,8 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 
 import application.Main;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -86,7 +88,7 @@ public class MainWindowController {
 	@FXML
 	private void clickOpen() throws IOException {
 		selectedFile = openFileChoser();
-		openPDFFile(selectedFile);
+		openPDFFile(selectedFile);		
 	}
 	
 	/**
@@ -147,8 +149,7 @@ public class MainWindowController {
 	 * Open selected PDF file.
 	 * @param selectedFile
 	 */
-	protected void openPDFFile(File selectedFile) {
-		
+	protected void openPDFFile(File selectedFile) {		
 		if (selectedFile == null){
 			return;
 		}
@@ -166,8 +167,7 @@ public class MainWindowController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		openPDFPage(pageNo = 0);
-		
+		openPDFPage(pageNo = 0);		
 		pdfContainer.preserveRatioProperty();
 		anchorPaneListeners();
 		navButtonListeners();
@@ -215,7 +215,7 @@ public class MainWindowController {
 	}
 
 	private void zoomListeners() {
-		zoomInButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		EventHandler<MouseEvent> zoomInButtonListener = new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());	
@@ -224,9 +224,11 @@ public class MainWindowController {
 				setFormatedZoomLevel(zoom);
 				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
-		});
+		};
+		zoomInButton.setOnMouseClicked(null);
+		zoomInButton.setOnMouseClicked(zoomInButtonListener);
 		
-		zoomOutButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		EventHandler<MouseEvent> zoomOutButtonListener = new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(2.0 * pdfContainer.getScaleX() / 3.0);
@@ -235,9 +237,11 @@ public class MainWindowController {
 				setFormatedZoomLevel(zoom);
 				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
-		});
+		};
+		zoomOutButton.setOnMouseClicked(null);
+		zoomOutButton.setOnMouseClicked(zoomOutButtonListener);
 		
-		zoomLevel.setOnAction(new EventHandler<ActionEvent>(){
+		EventHandler<ActionEvent> zoomLevelListener = new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
 				try {
@@ -251,7 +255,9 @@ public class MainWindowController {
 					// Do nothing on invalid input to the textbox
 				}
 			}		
-		});
+		};
+		zoomLevel.setOnAction(null);
+		zoomLevel.setOnAction(zoomLevelListener);
 	}
 
 	
@@ -270,7 +276,7 @@ public class MainWindowController {
 	 * Listens to mouse scrolls
 	 */
 	private void scrollListeners(){
-		scrollPane.setOnScroll(new EventHandler<ScrollEvent>(){
+		EventHandler<ScrollEvent> scrollListener = new EventHandler<ScrollEvent>(){
 			@Override
 			public void handle(ScrollEvent event) {
 				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){			
@@ -280,30 +286,36 @@ public class MainWindowController {
 						openPDFPage(++pageNo);
 				}
 			}			
-		});
+		};
+		scrollPane.setOnScroll(null);
+		scrollPane.setOnScroll(scrollListener);
 	}
 
 	/**
 	 * Listens to next (nextButton) and previous (nextButton) button clicks
 	 */
 	private void navButtonListeners() {
-		prevButton.setOnAction(new EventHandler<ActionEvent>() {
+		EventHandler<ActionEvent> prevButtonListener = new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	if (pageNo != 0){
 		    		openPDFPage(--pageNo);
 		    	}
 		    }
-		});
+		};
+		prevButton.setOnAction(null);
+		prevButton.setOnAction(prevButtonListener);
 		
-		nextButton.setOnAction(new EventHandler<ActionEvent>() {
+		EventHandler<ActionEvent> nextButtonListener = new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	if (pageNo != pdfFile.getNumberOfPages() - 1){
 		        	openPDFPage(++pageNo);
 		    	}
 		    }
-		});
+		};
+		nextButton.setOnAction(null);
+		nextButton.setOnAction(nextButtonListener);
 		
-		pageNumber.setOnAction(new EventHandler<ActionEvent>(){
+		EventHandler<ActionEvent> pageNumberListener = new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				try {
 					pageNo = Integer.parseInt(pageNumber.getText()) - 1;
@@ -313,7 +325,9 @@ public class MainWindowController {
 				if (pageNo >= 0 && pageNo < pdfFile.getNumberOfPages())
 					openPDFPage(pageNo);
 			}
-		});
+		};
+		pageNumber.setOnAction(null);
+		pageNumber.setOnAction(pageNumberListener);
 	}
 
 	/**
@@ -343,17 +357,27 @@ public class MainWindowController {
 	 * Listeners for the AnchorPane which embeds the main window. 
 	 */
 	private void anchorPaneListeners() {
-		anchorPane.widthProperty().addListener((obs, oldVal, newVal) -> {
-			pdfContainer.setTranslateX(pdfContainer.getTranslateX() + 0.5 * (newVal.doubleValue() - oldVal.doubleValue()));				
-		});
+		ChangeListener<Number> anchorPaneWidth = new ChangeListener<Number>(){
+	        @Override 
+	        public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
+	        	pdfContainer.setTranslateX(pdfContainer.getTranslateX() + 0.5 * (newVal.doubleValue() - oldVal.doubleValue()));	
+	        }
+		};
 		
-		anchorPane.heightProperty().addListener((obs, oldVal, newVal) -> {
-			pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
-			if (formattedZoomLevel != 0){
-	        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
-	        	zoomLevel.setText(formattedZoomLevel + "%");
-			}
-		});
+		ChangeListener<Number> anchorPaneHeight = new ChangeListener<Number>(){
+	        @Override 
+	        public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
+	        	pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
+				if (formattedZoomLevel != 0){
+		        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
+		        	zoomLevel.setText(formattedZoomLevel + "%");
+				}
+	        }
+		};
+		anchorPane.widthProperty().removeListener(anchorPaneWidth);
+		anchorPane.widthProperty().removeListener(anchorPaneHeight);
+		anchorPane.widthProperty().addListener(anchorPaneWidth);	
+		anchorPane.heightProperty().addListener(anchorPaneHeight);
 	}
 
 	/**

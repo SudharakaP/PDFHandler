@@ -81,7 +81,8 @@ public class MergePDFDialogController {
 		});
 	}
 
-	@FXML public void clickChoosePDF() {
+	@FXML 
+	public void clickChoosePDF() {
 		mergePDFFile = mainWindowController.openFileChoser();
 		mergePDFFileName.setText(mergePDFFile.getAbsolutePath());
 	}	
