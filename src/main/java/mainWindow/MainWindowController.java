@@ -52,7 +52,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.Group;
 
 public class MainWindowController {
@@ -65,7 +64,6 @@ public class MainWindowController {
 	@FXML Button zoomInButton;
 	@FXML Button zoomOutButton;
 	@FXML ScrollPane scrollPane;
-	@FXML HBox pdfContainerHBox;
 	@FXML Group groupContainer;
 	@FXML TextField zoomLevel;
 	
@@ -225,7 +223,6 @@ public class MainWindowController {
 				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
 		};
-		zoomInButton.setOnMouseClicked(null);
 		zoomInButton.setOnMouseClicked(zoomInButtonListener);
 		
 		EventHandler<MouseEvent> zoomOutButtonListener = new EventHandler<MouseEvent>(){
@@ -238,7 +235,6 @@ public class MainWindowController {
 				zoomLevel.setText(formattedZoomLevel + "%");
 			}		
 		};
-		zoomOutButton.setOnMouseClicked(null);
 		zoomOutButton.setOnMouseClicked(zoomOutButtonListener);
 		
 		EventHandler<ActionEvent> zoomLevelListener = new EventHandler<ActionEvent>(){
@@ -256,7 +252,6 @@ public class MainWindowController {
 				}
 			}		
 		};
-		zoomLevel.setOnAction(null);
 		zoomLevel.setOnAction(zoomLevelListener);
 	}
 
@@ -287,7 +282,6 @@ public class MainWindowController {
 				}
 			}			
 		};
-		scrollPane.setOnScroll(null);
 		scrollPane.setOnScroll(scrollListener);
 	}
 
@@ -302,7 +296,6 @@ public class MainWindowController {
 		    	}
 		    }
 		};
-		prevButton.setOnAction(null);
 		prevButton.setOnAction(prevButtonListener);
 		
 		EventHandler<ActionEvent> nextButtonListener = new EventHandler<ActionEvent>() {
@@ -312,7 +305,6 @@ public class MainWindowController {
 		    	}
 		    }
 		};
-		nextButton.setOnAction(null);
 		nextButton.setOnAction(nextButtonListener);
 		
 		EventHandler<ActionEvent> pageNumberListener = new EventHandler<ActionEvent>(){
@@ -326,7 +318,6 @@ public class MainWindowController {
 					openPDFPage(pageNo);
 			}
 		};
-		pageNumber.setOnAction(null);
 		pageNumber.setOnAction(pageNumberListener);
 	}
 
@@ -368,6 +359,7 @@ public class MainWindowController {
 	        @Override 
 	        public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
 	        	pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
+	        	scrollPane.setVvalue((scrollPane.getVmin() + scrollPane.getVmax()) / 2);
 				if (formattedZoomLevel != 0){
 		        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
 		        	zoomLevel.setText(formattedZoomLevel + "%");
