@@ -147,7 +147,8 @@ public class MainWindowController {
 	 * Open selected PDF file.
 	 * @param selectedFile
 	 */
-	protected void openPDFFile(File selectedFile) {		
+	protected void openPDFFile(File selectedFile) {	
+		boolean firstFile = false;
 		if (selectedFile == null){
 			return;
 		}
@@ -157,7 +158,9 @@ public class MainWindowController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} 
+		} else {
+			firstFile = true;
+		}
 		try {
 			pdfFile = PDDocument.load(selectedFile);
 		} catch (InvalidPasswordException e) {
@@ -165,12 +168,15 @@ public class MainWindowController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		openPDFPage(pageNo = 0);		
+		openPDFPage(pageNo = 0);
 		pdfContainer.preserveRatioProperty();
-		anchorPaneListeners();
-		navButtonListeners();
-		scrollListeners();
-		zoomListeners();
+		
+		if (firstFile){
+			anchorPaneListeners();
+			navButtonListeners();
+			scrollListeners();
+			zoomListeners();
+		}
 	}
 	
 	/**
