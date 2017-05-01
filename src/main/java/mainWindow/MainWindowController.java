@@ -32,7 +32,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -135,6 +134,12 @@ public class MainWindowController {
 	
 	private void keyCombinationListener(){
 		final KeyCombination openFile = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
+		final KeyCombination saveFile = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		final KeyCombination printFile = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+		final KeyCombination removeCurrentPage = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		final KeyCombination openMergePDFDialog = new KeyCodeCombination(KeyCode.M, KeyCombination.CONTROL_DOWN);
+		final KeyCombination openRotatePageDialog = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+
 		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -144,59 +149,19 @@ public class MainWindowController {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				}
-			}
-		});
-		
-		final KeyCombination saveFile = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (saveFile.match(event)) {
+				} else if (saveFile.match(event)) {
 					clickSave();
-				}
-			}
-		});
-		
-		final KeyCombination printFile = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
-		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (printFile.match(event)) {
+				} else if (printFile.match(event)) {
 					clickPrint();
-				}
-			}
-		});
-		
-		final KeyCombination removeCurrentPage = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
-		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (removeCurrentPage.match(event)) {
+				} else if (removeCurrentPage.match(event)) {
 					clickRemovePage();
-				}
-			}
-		});
-		
-		final KeyCombination openMergePDFDialog = new KeyCodeCombination(KeyCode.M, KeyCombination.CONTROL_DOWN);
-		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (openMergePDFDialog.match(event)) {
+				} else if (openMergePDFDialog.match(event)) {
 					clickMergePDF();
-				}
-			}
-		});
-		
-		final KeyCombination openRotatePageDialog = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
-		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (openRotatePageDialog.match(event)) {
+				} else if (openRotatePageDialog.match(event)) {
 					clickRotatePage();
 				}
 			}
-		});	
+		});
 	}
 
 	/**
