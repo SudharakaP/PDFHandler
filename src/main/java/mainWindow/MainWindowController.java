@@ -32,6 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
@@ -55,48 +60,60 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.Group;
 
 public class MainWindowController {
-	
-	@FXML AnchorPane anchorPane;
-	@FXML ImageView pdfContainer;
-	@FXML Button prevButton;
-	@FXML Button nextButton;
-	@FXML TextField pageNumber;
-	@FXML Button zoomInButton;
-	@FXML Button zoomOutButton;
-	@FXML ScrollPane scrollPane;
-	@FXML Group groupContainer;
-	@FXML TextField zoomLevel;
-	
+
+	@FXML
+	AnchorPane anchorPane;
+	@FXML
+	ImageView pdfContainer;
+	@FXML
+	Button prevButton;
+	@FXML
+	Button nextButton;
+	@FXML
+	TextField pageNumber;
+	@FXML
+	Button zoomInButton;
+	@FXML
+	Button zoomOutButton;
+	@FXML
+	ScrollPane scrollPane;
+	@FXML
+	Group groupContainer;
+	@FXML
+	TextField zoomLevel;
+
 	private int pageNo = 0;
 	private PDDocument pdfFile;
 	private float pdfPageSize;
 	private double formattedZoomLevel;
 	private File selectedFile;
-	
+
 	@FXML
-	public void initialize(){
+	public void initialize() {
 		Context.getContext().setMainWindow(this);
 		scrollPane.setContent(groupContainer);
+		keyCombinationListener();
 	}
 
 	/**
 	 * Action method for File -> Open menu item.
+	 * 
 	 * @throws IOException
 	 */
 	@FXML
 	private void clickOpen() throws IOException {
 		selectedFile = openFileChoser();
-		openPDFFile(selectedFile);		
+		openPDFFile(selectedFile);
 	}
-	
+
 	/**
-	 *  Action method for File -> Exit menu item.
+	 * Action method for File -> Exit menu item.
 	 */
 	@FXML
 	private void clickExit() {
 		Platform.exit();
 	}
-	
+
 	/**
 	 *  Action method for File -> Save menu item.
 	 */
@@ -116,22 +133,89 @@ public class MainWindowController {
 		}
 	}
 	
+	private void keyCombinationListener(){
+		final KeyCombination openFile = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (openFile.match(event)) {
+					try {
+						clickOpen();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		final KeyCombination saveFile = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (saveFile.match(event)) {
+					clickSave();
+				}
+			}
+		});
+		
+		final KeyCombination printFile = new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (printFile.match(event)) {
+					clickPrint();
+				}
+			}
+		});
+		
+		final KeyCombination removeCurrentPage = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (removeCurrentPage.match(event)) {
+					clickRemovePage();
+				}
+			}
+		});
+		
+		final KeyCombination openMergePDFDialog = new KeyCodeCombination(KeyCode.M, KeyCombination.CONTROL_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (openMergePDFDialog.match(event)) {
+					clickMergePDF();
+				}
+			}
+		});
+		
+		final KeyCombination openRotatePageDialog = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+		anchorPane.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (openRotatePageDialog.match(event)) {
+					clickRotatePage();
+				}
+			}
+		});	
+	}
+
 	/**
-	 *  Action method for File -> Print menu item.
+	 * Action method for File -> Print menu item.
 	 */
 	@FXML
-	private void clickPrint(){
-		if (pdfFile != null){
+	private void clickPrint() {
+		if (pdfFile != null) {
 			PrinterJob job = PrinterJob.getPrinterJob();
 			if (job.printDialog()) {
-		        try {
-		        	job.print();
-		        } catch (PrinterException e) {
-		        	e.printStackTrace();
-		         }
-		     }
+				try {
+					job.print();
+				} catch (PrinterException e) {
+					e.printStackTrace();
+				}
+			}
 		} else {
-			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
+			showInfoDialog("Information", "Open a PDF File First!",
+					"Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 
@@ -145,14 +229,15 @@ public class MainWindowController {
 
 	/**
 	 * Open selected PDF file.
+	 * 
 	 * @param selectedFile
 	 */
-	protected void openPDFFile(File selectedFile) {	
+	protected void openPDFFile(File selectedFile) {
 		boolean firstFile = false;
-		if (selectedFile == null){
+		if (selectedFile == null) {
 			return;
 		}
-		if (pdfFile != null){
+		if (pdfFile != null) {
 			try {
 				pdfFile.close();
 			} catch (IOException e) {
@@ -170,68 +255,71 @@ public class MainWindowController {
 		}
 		openPDFPage(pageNo = 0);
 		pdfContainer.preserveRatioProperty();
-		
-		if (firstFile){
+
+		if (firstFile) {
 			anchorPaneListeners();
 			navButtonListeners();
 			scrollListeners();
 			zoomListeners();
 		}
 	}
-	
+
 	/**
 	 * Action method for Edit -> Remove Current Page menu item.
 	 */
 	@FXML
-	private void clickRemovePage(){
-		if (pdfFile != null){
+	private void clickRemovePage() {
+		if (pdfFile != null) {
 			pdfFile.removePage(pageNo);
 			if (pageNo != pdfFile.getNumberOfPages())
 				openPDFPage(pageNo);
-			else 
+			else
 				openPDFPage(--pageNo);
 		} else {
-			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
+			showInfoDialog("Information", "Open a PDF File First!",
+					"Chose a PDF file to open using the File -> Open menu");
 		}
 	}
-	
+
 	/**
 	 * Action method for Edit -> Rotate Page menu item.
 	 */
 	@FXML
-	private void clickRotatePage(){
-		if (pdfFile != null){
+	private void clickRotatePage() {
+		if (pdfFile != null) {
 			DialogPane rotationDialogPane = null;
 			try {
-				rotationDialogPane = (DialogPane) FXMLLoader.load(Main.class.getResource("../mainWindow/RotationDialog.fxml"));
+				rotationDialogPane = (DialogPane) FXMLLoader
+						.load(Main.class.getResource("../mainWindow/RotationDialog.fxml"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			Stage stage = new Stage(StageStyle.UNDECORATED);
 			Scene scene = new Scene(rotationDialogPane);
-            stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(anchorPane.getScene().getWindow());
-            stage.show();
+			stage.setScene(scene);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(anchorPane.getScene().getWindow());
+			stage.show();
 		} else {
-			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
+			showInfoDialog("Information", "Open a PDF File First!",
+					"Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 
 	private void zoomListeners() {
-		EventHandler<MouseEvent> zoomInButtonListener = new EventHandler<MouseEvent>(){
+		EventHandler<MouseEvent> zoomInButtonListener = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());	
-				pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());	
+				pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());
+				pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());
 				double zoom = 100 * pdfContainer.getFitHeight() * pdfContainer.getScaleY() / pdfPageSize;
 				setFormatedZoomLevel(zoom);
 				zoomLevel.setText(formattedZoomLevel + "%");
-			}		
+			}
 		};
 		zoomInButton.setOnMouseClicked(zoomInButtonListener);
-		
-		EventHandler<MouseEvent> zoomOutButtonListener = new EventHandler<MouseEvent>(){
+
+		EventHandler<MouseEvent> zoomOutButtonListener = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				pdfContainer.setScaleX(2.0 * pdfContainer.getScaleX() / 3.0);
@@ -239,54 +327,53 @@ public class MainWindowController {
 				double zoom = 100 * pdfContainer.getFitHeight() * pdfContainer.getScaleY() / pdfPageSize;
 				setFormatedZoomLevel(zoom);
 				zoomLevel.setText(formattedZoomLevel + "%");
-			}		
+			}
 		};
 		zoomOutButton.setOnMouseClicked(zoomOutButtonListener);
-		
-		EventHandler<ActionEvent> zoomLevelListener = new EventHandler<ActionEvent>(){
+
+		EventHandler<ActionEvent> zoomLevelListener = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
 					String zoom = zoomLevel.getText();
-					if (zoom.contains("%")){
+					if (zoom.contains("%")) {
 						zoom = zoom.replace("%", "");
 					}
 					pdfContainer.setFitHeight(pdfPageSize * Double.parseDouble(zoom) / 100);
 					zoomLevel.setText(zoom + "%");
-				} catch (NumberFormatException exception){
+				} catch (NumberFormatException exception) {
 					// Do nothing on invalid input to the textbox
 				}
-			}		
+			}
 		};
 		zoomLevel.setOnAction(zoomLevelListener);
 	}
 
-	
 	/**
 	 * Formats the zoom level that is displayed in the textbox
 	 * 
 	 * @param zoomLevel
 	 */
-	private void setFormatedZoomLevel(double zoomLevel){
+	private void setFormatedZoomLevel(double zoomLevel) {
 		BigDecimal bigDecimal = new BigDecimal(zoomLevel);
-        bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP);
-        formattedZoomLevel = bigDecimal.doubleValue();
+		bigDecimal = bigDecimal.setScale(1, BigDecimal.ROUND_HALF_UP);
+		formattedZoomLevel = bigDecimal.doubleValue();
 	}
-	
+
 	/**
 	 * Listens to mouse scrolls
 	 */
-	private void scrollListeners(){
-		EventHandler<ScrollEvent> scrollListener = new EventHandler<ScrollEvent>(){
+	private void scrollListeners() {
+		EventHandler<ScrollEvent> scrollListener = new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()){			
-						openPDFPage(--pageNo);
-				} else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1 
-						&& scrollPane.vvalueProperty().get() == scrollPane.getVmax()) {				
-						openPDFPage(++pageNo);
+				if (event.getDeltaY() > 0 && pageNo != 0 && scrollPane.vvalueProperty().get() == scrollPane.getVmin()) {
+					openPDFPage(--pageNo);
+				} else if (event.getDeltaY() < 0 && pageNo != pdfFile.getNumberOfPages() - 1
+						&& scrollPane.vvalueProperty().get() == scrollPane.getVmax()) {
+					openPDFPage(++pageNo);
 				}
-			}			
+			}
 		};
 		scrollPane.setOnScroll(scrollListener);
 	}
@@ -296,28 +383,31 @@ public class MainWindowController {
 	 */
 	private void navButtonListeners() {
 		EventHandler<ActionEvent> prevButtonListener = new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	if (pageNo != 0){
-		    		openPDFPage(--pageNo);
-		    	}
-		    }
+			@Override
+			public void handle(ActionEvent e) {
+				if (pageNo != 0) {
+					openPDFPage(--pageNo);
+				}
+			}
 		};
 		prevButton.setOnAction(prevButtonListener);
-		
+
 		EventHandler<ActionEvent> nextButtonListener = new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	if (pageNo != pdfFile.getNumberOfPages() - 1){
-		        	openPDFPage(++pageNo);
-		    	}
-		    }
+			@Override
+			public void handle(ActionEvent e) {
+				if (pageNo != pdfFile.getNumberOfPages() - 1) {
+					openPDFPage(++pageNo);
+				}
+			}
 		};
 		nextButton.setOnAction(nextButtonListener);
-		
-		EventHandler<ActionEvent> pageNumberListener = new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent e){
+
+		EventHandler<ActionEvent> pageNumberListener = new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
 				try {
 					pageNo = Integer.parseInt(pageNumber.getText()) - 1;
-				} catch (NumberFormatException exception){
+				} catch (NumberFormatException exception) {
 					// Do nothing on invalid input to the textbox
 				}
 				if (pageNo >= 0 && pageNo < pdfFile.getNumberOfPages())
@@ -329,57 +419,60 @@ public class MainWindowController {
 
 	/**
 	 * Opens/Displays the PDF page by converting it into a BufferedImage object
+	 * 
 	 * @param pageNo
 	 */
-	protected void openPDFPage(int pageNo){
+	protected void openPDFPage(int pageNo) {
 		int displayNo = pageNo + 1;
 		PDFRenderer renderer = new PDFRenderer(pdfFile);
-        Image image = null;
-        try {
+		Image image = null;
+		try {
 			image = SwingFXUtils.toFXImage(renderer.renderImageWithDPI(pageNo, 500), null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        pdfContainer.setImage(image);
-        pageNumber.setText("" + displayNo);
-        scrollPane.setVvalue(scrollPane.getVmin());
-        pdfPageSize = pdfFile.getPage(pageNo).getMediaBox().getHeight();
-        
-        if (formattedZoomLevel == 0)
-        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
-        zoomLevel.setText(formattedZoomLevel + "%");
+		pdfContainer.setImage(image);
+		pageNumber.setText("" + displayNo);
+		scrollPane.setVvalue(scrollPane.getVmin());
+		pdfPageSize = pdfFile.getPage(pageNo).getMediaBox().getHeight();
+
+		if (formattedZoomLevel == 0)
+			setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
+		zoomLevel.setText(formattedZoomLevel + "%");
 	}
 
 	/**
-	 * Listeners for the AnchorPane which embeds the main window. 
+	 * Listeners for the AnchorPane which embeds the main window.
 	 */
 	private void anchorPaneListeners() {
-		ChangeListener<Number> anchorPaneWidth = new ChangeListener<Number>(){
-	        @Override 
-	        public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
-	        	pdfContainer.setTranslateX(pdfContainer.getTranslateX() + 0.5 * (newVal.doubleValue() - oldVal.doubleValue()));	
-	        }
+		ChangeListener<Number> anchorPaneWidth = new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
+				pdfContainer.setTranslateX(
+						pdfContainer.getTranslateX() + 0.5 * (newVal.doubleValue() - oldVal.doubleValue()));
+			}
 		};
-		
-		ChangeListener<Number> anchorPaneHeight = new ChangeListener<Number>(){
-	        @Override 
-	        public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
-	        	pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
-	        	scrollPane.setVvalue((scrollPane.getVmin() + scrollPane.getVmax()) / 2);
-				if (formattedZoomLevel != 0){
-		        	setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
-		        	zoomLevel.setText(formattedZoomLevel + "%");
+
+		ChangeListener<Number> anchorPaneHeight = new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
+				pdfContainer.setFitHeight(pdfContainer.getFitHeight() + newVal.doubleValue() - oldVal.doubleValue());
+				scrollPane.setVvalue((scrollPane.getVmin() + scrollPane.getVmax()) / 2);
+				if (formattedZoomLevel != 0) {
+					setFormatedZoomLevel(100 * pdfContainer.getFitHeight() / pdfPageSize);
+					zoomLevel.setText(formattedZoomLevel + "%");
 				}
-	        }
+			}
 		};
 		anchorPane.widthProperty().removeListener(anchorPaneWidth);
 		anchorPane.widthProperty().removeListener(anchorPaneHeight);
-		anchorPane.widthProperty().addListener(anchorPaneWidth);	
+		anchorPane.widthProperty().addListener(anchorPaneWidth);
 		anchorPane.heightProperty().addListener(anchorPaneHeight);
 	}
 
 	/**
 	 * Opens the file chooser dialog.
+	 * 
 	 * @return the chosen file path
 	 */
 	protected File openFileChoser() {
@@ -389,10 +482,10 @@ public class MainWindowController {
 		File selectedFile = fileChooser.showOpenDialog(anchorPane.getScene().getWindow());
 		return selectedFile;
 	}
-	
-	
+
 	/**
 	 * Opens the file saving dialog.
+	 * 
 	 * @return the selected filepath
 	 */
 	private File savePDFFile() {
@@ -405,30 +498,33 @@ public class MainWindowController {
 
 	/**
 	 * Handles the rotation of pages.
+	 * 
 	 * @param angle
 	 */
-	public void rotatePage(int angle) {				
+	public void rotatePage(int angle) {
 		pdfFile.getPage(pageNo).setRotation(angle + pdfFile.getPage(pageNo).getRotation());
 		openPDFPage(pageNo);
 	}
 
-	@FXML 
+	@FXML
 	private void clickMergePDF() {
-		if (pdfFile != null){
+		if (pdfFile != null) {
 			DialogPane mergeDialogPane = null;
 			try {
-				mergeDialogPane = (DialogPane) FXMLLoader.load(Main.class.getResource("../mainWindow/MergePDFDialog.fxml"));
+				mergeDialogPane = (DialogPane) FXMLLoader
+						.load(Main.class.getResource("../mainWindow/MergePDFDialog.fxml"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			Stage stage = new Stage(StageStyle.UNDECORATED);
 			Scene scene = new Scene(mergeDialogPane);
-            stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(anchorPane.getScene().getWindow());
-            stage.show();
+			stage.setScene(scene);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(anchorPane.getScene().getWindow());
+			stage.show();
 		} else {
-			showInfoDialog("Information", "Open a PDF File First!", "Chose a PDF file to open using the File -> Open menu");
+			showInfoDialog("Information", "Open a PDF File First!",
+					"Chose a PDF file to open using the File -> Open menu");
 		}
 	}
 
@@ -436,14 +532,14 @@ public class MainWindowController {
 		PDFMergerUtility pdfMerger = new PDFMergerUtility();
 		try {
 			pdfMerger.addSource(selectedFile);
-			pdfMerger.addSource(new File(pdfFile));		
+			pdfMerger.addSource(new File(pdfFile));
 			pdfMerger.setDestinationFileName(selectedFile.getAbsolutePath());
 			pdfMerger.mergeDocuments(null);
- 			showInfoDialog("Done", "PDF Merge Successful!", "The pdf files, " + 
-			selectedFile.getName() + " and " + pdfFile + " has been merged sucessfully.");
- 			openPDFFile(selectedFile);
+			showInfoDialog("Done", "PDF Merge Successful!",
+					"The pdf files, " + selectedFile.getName() + " and " + pdfFile + " has been merged sucessfully.");
+			openPDFFile(selectedFile);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 }
