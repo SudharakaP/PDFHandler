@@ -132,6 +132,9 @@ public class MainWindowController {
 		}
 	}
 	
+	/**
+	 * Listens to user key strokes and perform action depending on appropriate key combinations. 
+	 */
 	private void keyCombinationListener(){
 		final KeyCombination openFile = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
 		final KeyCombination saveFile = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
