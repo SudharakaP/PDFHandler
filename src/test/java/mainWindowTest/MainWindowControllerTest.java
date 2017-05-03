@@ -1,4 +1,4 @@
-package mainWindow;
+package mainWindowTest;
 
 import static org.junit.Assert.*;
 
