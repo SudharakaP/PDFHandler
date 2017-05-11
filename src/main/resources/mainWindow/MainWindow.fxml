@@ -42,8 +42,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Undo                               Ctrl+Z" />
-                  <MenuItem mnemonicParsing="false" text="Redo                               Ctrl+Y" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickUndo" text="Undo                               Ctrl+Z" />
+                  <MenuItem mnemonicParsing="false" onAction="#clickRedo" text="Redo                               Ctrl+Y" />
               <MenuItem mnemonicParsing="false" onAction="#clickRemovePage" text="Remove Current Page    Ctrl+Shift+R" />
                   <MenuItem mnemonicParsing="false" onAction="#clickMergePDF" text="Merge PDFs                    Ctrl+M" />
                   <MenuItem mnemonicParsing="false" text="Crop Page                       Ctrl+C" />
