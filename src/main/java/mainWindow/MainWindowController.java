@@ -20,6 +20,8 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -86,6 +88,29 @@ public class MainWindowController {
 	private float pdfPageSize;
 	private double formattedZoomLevel;
 	private File selectedFile;
+	
+	private abstract class PDFChange<T> {
+        protected final T oldValue;
+        protected final T newValue;
+
+        protected PDFChange(T oldValue, T newValue) {
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+        }
+
+        abstract void redo();
+        abstract PDFChange<T> invert();
+
+        Optional<PDFChange<?>> mergeWith(PDFChange<?> other) {
+            // don't merge changes by default
+            return Optional.empty();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(oldValue, newValue);
+        }
+    };
 
 	@FXML
 	public void initialize() {
