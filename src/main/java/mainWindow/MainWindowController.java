@@ -15,6 +15,8 @@
  ******************************************************************************/
 package mainWindow;
 
+import static org.reactfx.EventStreams.changesOf;
+
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
@@ -27,6 +29,8 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.reactfx.Change;
+import org.reactfx.EventStream;
 
 import application.Main;
 import javafx.application.Platform;
@@ -111,12 +115,42 @@ public class MainWindowController {
             return Objects.hash(oldValue, newValue);
         }
     };
+    
+    private class ZoomChange extends PDFChange<String> {
+        public ZoomChange(String oldValue, String newValue) {
+            super(oldValue, newValue);
+        }
+        public ZoomChange(Change<String> c) {
+            this((String) c.getOldValue(), (String) c.getNewValue());
+        }
+        @Override 
+        void redo() { 
+        	pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());
+        	pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());
+        }
+        @Override 
+        ZoomChange invert() { 
+        	return new ZoomChange(newValue, oldValue); 
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if(other instanceof ZoomChange) {
+            	ZoomChange that = (ZoomChange) other;
+                return Objects.equals(this.oldValue, that.oldValue)
+                    && Objects.equals(this.newValue, that.newValue);
+            } else {
+                return false;
+            }
+        }
+    }
 
 	@FXML
 	public void initialize() {
 		Context.getContext().setMainWindow(this);
 		scrollPane.setContent(groupContainer);
 		keyCombinationListener();
+		EventStream<ZoomChange> pdfChanges = changesOf(pdfContainer.accessibleTextProperty()).map(c -> new ZoomChange(c));
 	}
 
 	/**

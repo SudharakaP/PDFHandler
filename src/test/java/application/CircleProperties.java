@@ -55,7 +55,7 @@ public class CircleProperties extends Application {
         }
     };
 
-    private class ColorChange extends CircleChange<Color> {
+    public class ColorChange extends CircleChange<Color> {
         public ColorChange(Color oldValue, Color newValue) {
             super(oldValue, newValue);
         }
