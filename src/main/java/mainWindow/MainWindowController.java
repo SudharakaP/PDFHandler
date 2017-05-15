@@ -27,6 +27,7 @@ import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.reactfx.Change;
 
 import application.Main;
 import javafx.application.Platform;
@@ -51,6 +52,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -111,6 +114,35 @@ public class MainWindowController {
             return Objects.hash(oldValue, newValue);
         }
     };
+    
+    private class ZoomChange extends PDFChange<String> {
+        public ZoomChange(String oldValue, String newValue) {
+            super(oldValue, newValue);
+        }
+        public ZoomChange(Change<String> c) {
+            this((String) c.getOldValue(), (String) c.getNewValue());
+        }
+        @Override 
+        void redo() { 
+        	pdfContainer.setScaleX(1.5 * pdfContainer.getScaleX());
+        	pdfContainer.setScaleY(1.5 * pdfContainer.getScaleY());
+        }
+        @Override 
+        ZoomChange invert() { 
+        	return new ZoomChange(newValue, oldValue); 
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if(other instanceof ZoomChange) {
+            	ZoomChange that = (ZoomChange) other;
+                return Objects.equals(this.oldValue, that.oldValue)
+                    && Objects.equals(this.newValue, that.newValue);
+            } else {
+                return false;
+            }
+        }
+    }
 
 	@FXML
 	public void initialize() {
