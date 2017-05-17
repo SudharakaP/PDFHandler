@@ -30,12 +30,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.reactfx.Change;
-<<<<<<< HEAD
 import org.reactfx.EventStream;
-import org.reactfx.Change;
-=======
->>>>>>> branch 'master' of https://github.com/SudharakaP/PDFHandler.git
-
 import application.Main;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -59,8 +54,6 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
