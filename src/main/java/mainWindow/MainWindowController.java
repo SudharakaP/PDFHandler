@@ -30,8 +30,11 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.reactfx.Change;
+<<<<<<< HEAD
 import org.reactfx.EventStream;
 import org.reactfx.Change;
+=======
+>>>>>>> branch 'master' of https://github.com/SudharakaP/PDFHandler.git
 
 import application.Main;
 import javafx.application.Platform;
